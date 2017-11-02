@@ -46,19 +46,15 @@
         "type": "function",
         "z": "7204abf1.ff7124",
         "name": "",
-        "func": "var msg1 = {};\nvar msg2 = {};\nvar msg3 = {};\nvar msg4 = {};\nvar msg5 = {};\nmsg.payload = msg.payload.split(\"rxpk\");\nmsg1.payload = msg.payload[1];\nmsg1.payload = msg1.payload.split(\",\\\"data\");\nmsg2.payload = msg1.payload[0];\nmsg2.payload = msg2.payload.substring(2);\n//msg2.payload = msg2.payload.substring(0, msg2.payload.length()-2);\nmsg2.payload = msg2.payload + \"}]\";\n\nmsg3.payload = msg.payload[2];\nmsg3.payload = msg3.payload.split(\",\\\"data\");\nmsg4.payload = msg3.payload[0];\nmsg4.payload = msg4.payload.substring(2);\nmsg4.payload = msg4.payload + \"}]\";\n\nreturn [msg2,msg4];\n",
-        "outputs": "3",
+        "func": "var msg1 = {};\nvar msg2 = {};\nvar msg3 = {};\nvar msg4 = {};\nvar msg5 = {};\nvar msg6 = {};\nvar msg7 = {};\nvar msg8 = {};\nvar msg9 = {};\n\nmsg.payload = msg.payload.split(\"rxpk\");\nmsg1.payload = msg.payload[1];\nmsg1.payload = msg1.payload.split(\",\\\"data\");\nmsg2.payload = msg1.payload[0];\nmsg2.payload = msg2.payload.substring(2);\n//msg2.payload = msg2.payload.substring(0, msg2.payload.length()-2);\nmsg2.payload = msg2.payload + \"}]\";\n\n//msg3.payload = msg.payload[2];\n//msg3.payload = msg3.payload.split(\",\\\"data\");\n//msg4.payload = msg3.payload[0];\n//msg4.payload = msg4.payload.substring(2);\n//msg4.payload = msg4.payload + \"}]\";\n\n//msg5.payload = msg.payload[3];\n//msg5.payload = msg5.payload.split(\",\\\"data\");\n//msg6.payload = msg5.payload[0];\n//msg6.payload = msg6.payload.substring(2);\n//msg6.payload = msg6.payload + \"}]\";\n\n//msg7.payload = msg.payload[4];\n//msg7.payload = msg7.payload.split(\",\\\"data\");\n//msg8.payload = msg7.payload[0];\n//msg8.payload = msg8.payload.substring(2);\n//vmsg8.payload = msg8.payload + \"}]\";\n\n//msg9.payload = msg.payload[5];\n\nreturn [msg2];\n",
+        "outputs": "1",
         "noerr": 0,
         "x": 582,
         "y": 165,
         "wires": [
             [
                 "5d2d0d64.8d70b4"
-            ],
-            [
-                "60d0a615.20d698"
-            ],
-            []
+            ]
         ]
     },
     {
@@ -91,19 +87,6 @@
         ]
     },
     {
-        "id": "6ccec87a.a96168",
-        "type": "influxdb out",
-        "z": "7204abf1.ff7124",
-        "influxdb": "d7adbe37.624be",
-        "name": "",
-        "measurement": "gw1",
-        "precision": "",
-        "retentionPolicy": "",
-        "x": 1034,
-        "y": 147,
-        "wires": []
-    },
-    {
         "id": "169e60.786301a1",
         "type": "switch",
         "z": "7204abf1.ff7124",
@@ -128,36 +111,7 @@
         ]
     },
     {
-        "id": "60d0a615.20d698",
-        "type": "json",
-        "z": "7204abf1.ff7124",
-        "name": "",
-        "x": 739,
-        "y": 189,
-        "wires": [
-            [
-                "81a94c3.54d64b"
-            ]
-        ]
-    },
-    {
-        "id": "81a94c3.54d64b",
-        "type": "function",
-        "z": "7204abf1.ff7124",
-        "name": "",
-        "func": "//rssi\nvar msg1 = { payload: msg.payload.length };\nmsg1.payload = msg.payload[0].rssi;\n\n//snr\nvar msg2 = { payload: msg.payload.length };\nmsg2.payload = msg.payload[0].lsnr;\n\n//freq\nvar msg3 = { payload: msg.payload.length };\nmsg3.payload = msg.payload[0].freq;\n\n//size\nvar msg4 = { payload: msg.payload.length };\nmsg4.payload = msg.payload[0].size;\n\n//SF\nvar msg5 = { payload: msg.payload.length };\nmsg5.payload = msg.payload[0].datr;\nmsg5.payload = msg5.payload.split(\"BW\");\nmsg5.payload = msg5.payload[0];\nmsg5.payload = msg5.payload.split(\"SF\");\nmsg5.payload = msg5.payload[1];\n\n//chan\nvar msg7 = { payload: msg.payload.length };\nmsg7.payload = msg.payload[0].chan;\n\nvar msg6 = {};\nmsg6.payload = [{\"rssi\": msg1.payload, \"snr\": msg2.payload, \"freq\": msg3.payload, \"size\": msg4.payload, \"sf\": msg5.payload, \"chan\": msg7.payload}];\n\nreturn msg6;",
-        "outputs": "1",
-        "noerr": 0,
-        "x": 866,
-        "y": 189,
-        "wires": [
-            [
-                "6c75c387.91ff1c"
-            ]
-        ]
-    },
-    {
-        "id": "6c75c387.91ff1c",
+        "id": "6ccec87a.a96168",
         "type": "influxdb out",
         "z": "7204abf1.ff7124",
         "influxdb": "d7adbe37.624be",
@@ -165,17 +119,17 @@
         "measurement": "gw1",
         "precision": "",
         "retentionPolicy": "",
-        "x": 1058,
-        "y": 189,
+        "x": 1034,
+        "y": 147,
         "wires": []
     },
     {
         "id": "ac5e64fd.682818",
         "type": "SSH_Credentials",
         "z": "",
-        "host": "gwip",
+        "host": "gw-ip",
         "port": "22",
-        "userlabel": "gwuser@gwip"
+        "userlabel": "gw-user@gw-ip"
     },
     {
         "id": "d7adbe37.624be",
