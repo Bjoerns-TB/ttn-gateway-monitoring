@@ -64,7 +64,7 @@
         "rules": [
             {
                 "t": "cont",
-                "v": "rxpk",
+                "v": "pk",
                 "vt": "str"
             },
             {
@@ -77,7 +77,8 @@
         "y": 99,
         "wires": [
             [
-                "d7feec72.0ee2"
+                "d7feec72.0ee2",
+                "10880f1b.2ed671"
             ],
             []
         ]
@@ -142,6 +143,80 @@
                 "6ccec87a.a96168"
             ]
         ]
+    },
+    {
+        "id": "10880f1b.2ed671",
+        "type": "function",
+        "z": "7204abf1.ff7124",
+        "name": "txpk Count",
+        "func": "//count for rxpk messages\nvar msgcount = {};\nmsgcount.payload = msg.payload.split(\"txpk\").length - 1;\n\n//split these messages\nmsg.payload = msg.payload.split(\"txpk\");\n\nvar msglist = [];\n\n//\nfor(var i=1; i<msgcount.payload+1; i++)\n{\nmsglist.push({payload:msg.payload[i]});\n}\n\nreturn [msglist];",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 597,
+        "y": 185,
+        "wires": [
+            [
+                "87bc1ccd.50921"
+            ]
+        ]
+    },
+    {
+        "id": "87bc1ccd.50921",
+        "type": "function",
+        "z": "7204abf1.ff7124",
+        "name": "",
+        "func": "var msg1 = {};\n\nmsg.payload = msg.payload.split(\",\\\"data\");\nmsg1.payload = msg.payload[0];\nmsg1.payload = msg1.payload.substring(2);\nmsg1.payload = msg1.payload + \"}]\";\nmsg1.payload = \"[\" + msg1.payload;\nmsg1.payload = msg1.payload.replace(\"false\",0);\nmsg1.payload = msg1.payload.replace(\"true\",1);\nreturn msg1;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 742,
+        "y": 192,
+        "wires": [
+            [
+                "69d06035.195a6"
+            ]
+        ]
+    },
+    {
+        "id": "69d06035.195a6",
+        "type": "json",
+        "z": "7204abf1.ff7124",
+        "name": "",
+        "x": 860,
+        "y": 192,
+        "wires": [
+            [
+                "c193dfc3.b742a"
+            ]
+        ]
+    },
+    {
+        "id": "c193dfc3.b742a",
+        "type": "function",
+        "z": "7204abf1.ff7124",
+        "name": "",
+        "func": "//imme\nvar msg1 = { payload: msg.payload.length };\nmsg1.payload = msg.payload[0].imme;\n\n//ipol\nvar msg2 = { payload: msg.payload.length };\nmsg2.payload = msg.payload[0].ipol;\n\n//freq\nvar msg3 = { payload: msg.payload.length };\nmsg3.payload = msg.payload[0].freq;\n\n//size\nvar msg4 = { payload: msg.payload.length };\nmsg4.payload = msg.payload[0].size;\n\n//SF\nvar msg5 = { payload: msg.payload.length };\nmsg5.payload = msg.payload[0].datr;\nmsg5.payload = msg5.payload.split(\"BW\");\nmsg5.payload = msg5.payload[0];\nmsg5.payload = msg5.payload.split(\"SF\");\nmsg5.payload = msg5.payload[1];\n\n//chan\nvar msg7 = { payload: msg.payload.length };\nmsg7.payload = msg.payload[0].rfch;\n\n//powe\nvar msg8 = { payload: msg.payload.length };\nmsg8.payload = msg.payload[0].powe;\n\nvar msg6 = {};\nmsg6.payload = [{\"imme\": msg1.payload, \"ipol\": msg2.payload, \"freq\": msg3.payload, \"size\": msg4.payload, \"sf\": msg5.payload, \"chan\": msg7.payload, \"powe\": msg8.payload}];\n\nreturn msg6;",
+        "outputs": "1",
+        "noerr": 0,
+        "x": 1008,
+        "y": 199,
+        "wires": [
+            [
+                "ac6a4259.a320c"
+            ]
+        ]
+    },
+    {
+        "id": "ac6a4259.a320c",
+        "type": "influxdb out",
+        "z": "7204abf1.ff7124",
+        "influxdb": "d7adbe37.624be",
+        "name": "",
+        "measurement": "gw1-out",
+        "precision": "",
+        "retentionPolicy": "",
+        "x": 1017,
+        "y": 253,
+        "wires": []
     },
     {
         "id": "ac5e64fd.682818",
